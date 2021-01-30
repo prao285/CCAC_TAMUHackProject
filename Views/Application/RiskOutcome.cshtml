@@ -1,0 +1,15 @@
+<head>
+<script>
+    function openTheThing(param) {
+        console.log("hello");
+    // similar behavior as clicking on a link
+    window.location.href = "https://localhost:5001/Application/Populate?sessionId="+param;
+}</script>
+
+
+</head>
+<body>
+<h1>Generating session ID </h1>
+<h1>Create a new session:</h1>
+<b>your session ID is: @ViewBag.Description</b>
+</body>
