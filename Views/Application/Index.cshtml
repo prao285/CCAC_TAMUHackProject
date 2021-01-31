@@ -47,7 +47,6 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 
 <!-- Navigation Bar -->
 <div class="w3-bar w3-white w3-border-bottom w3-xlarge">
-  <a href="#" class="w3-bar-item w3-button w3-text-red w3-hover-red"><b><i class="fa fa-map-marker w3-margin-right"></i>CCAC TAMUhacks</b></a>
   <a href="#" class="w3-bar-item w3-button w3-right w3-hover-red w3-text-grey"><i class="fa fa-search"></i></a>
 </div>
 
@@ -58,7 +57,6 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
       
 
     <div class="w3-bar w3-black">
-      <button class="w3-bar-item w3-button tablink" onclick="start();"><i class="fa fa-plane w3-margin-right"></i>Flight</button>
     </div>
 
     <!-- Tabs -->
@@ -128,10 +126,8 @@ function start() {
   }
   tablinks = document.getElementsByClassName("tablink");
   for (i = 0; i < x.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
   }
   document.getElementById('Flight').style.display = "block";
-  event.currentTarget.className += " w3-red";
 } 
 // Launch Flight Portion
 document.getElementsByClassName("tablink")[0].click();
