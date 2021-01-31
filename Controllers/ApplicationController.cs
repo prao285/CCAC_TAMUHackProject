@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Numerics;
 namespace hackathon.Controllers{
 
     public class ApplicationController: Controller{
@@ -125,13 +126,42 @@ namespace hackathon.Controllers{
             return View();
         }
 
-        private int calculateRisk(List<int> positivityRates){
-            //black box code 
-            int risk = 100;
+        private double calculateRisk(List<int> positivityRates, List<String> airports){
+            //black box code
+            double totalRisk = 0;
+            for (int i = 0; i < airports.Count; i ++) {
+                double population = double.Parse(airportToDailyPersons[airports[i]]);
+                double totalInfected = positivityRates[i];
+                double numOfPeopleContacted = 40;
 
-            return risk;
+                BigInteger numerator = (BigInteger)Math.Pow(population - totalInfected, numOfPeopleContacted);
+                BigInteger denom = (BigInteger)Math.Pow(population, numOfPeopleContacted);
+
+
+
+                Console.WriteLine(numerator);
+                Console.WriteLine(denom);
+                Console.WriteLine(factorialDivision(numerator, denom));
+
+
+                totalRisk += (1 - ((double) (numerator) / (double) (denom)));
+            }
+
+            return totalRisk;
         }
-        public async Task<ActionResult> RiskOutcome(string StartingLocation,string EndingLocation, int  NumConnections, string ConnectingLocations){
+
+        private decimal factorialDivision(BigInteger num, BigInteger denom) {
+            decimal result = 1;
+
+            for(BigInteger i = (num + 1); i <= denom; i ++) {
+                result *= ((decimal)i) / 1000000;
+            }
+            
+            return(result);
+        }
+
+
+        public async Task<ActionResult> RiskOutcome(string StartingLocation, string EndingLocation, int  NumConnections, string ConnectingLocations){
            
             //creates the client 
             HttpClient client = new HttpClient();
@@ -145,17 +175,19 @@ namespace hackathon.Controllers{
             //gets response 
             string responseBody = await response.Content.ReadAsStringAsync();
             var stateResults = Newtonsoft.Json.JsonConvert.DeserializeObject<List<State>>(responseBody);;
-            var startingInfo = (stateResults).Where(x=>x.state == StartingLocation).ToArray()[0];
+            var startingInfo = (stateResults).Where(x=>x.state == aiportToStates[StartingLocation]).ToArray()[0];
 
             //add positivity rates 
             List<int> positivityRates = new List<int>();
+            List<String> airports = new List<string>();
             positivityRates.Add((int)(stateResults).Where(x=>x.state == aiportToStates[StartingLocation]).ToArray()[0].positiveIncrease);
-            positivityRates.Add((int)(stateResults).Where(x=>x.state == aiportToStates[EndingLocation]).ToArray()[0].positiveIncrease);
+            airports.Add(StartingLocation);
             
             //split conections 
             Array connections = ConnectingLocations.Split(",");
             foreach(string s in connections){
                 try{
+                   airports.Add(s);
                    positivityRates.Add((int)(stateResults).Where(x=>x.state == aiportToStates[s]).ToArray()[0].positiveIncrease);
                 }
                 catch{
@@ -163,8 +195,12 @@ namespace hackathon.Controllers{
                 }
             }
 
-            ViewBag.Description = calculateRisk(positivityRates);
-            Console.WriteLine(positivityRates[0]);
+            positivityRates.Add((int)(stateResults).Where(x=>x.state == aiportToStates[EndingLocation]).ToArray()[0].positiveIncrease);
+            airports.Add(EndingLocation);
+
+
+            ViewBag.Description = calculateRisk(positivityRates, airports);
+            //Console.WriteLine(positivityRates[0]);
             return View();
         }
     }
