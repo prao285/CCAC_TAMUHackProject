@@ -170,7 +170,8 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
                     @Html.DropDownListFor(model => model.ConnectingLocations, new SelectList(listItems,  "Value", "Text", "HackerNoises"), new {@multiple="multiple",@placeholder="Please select country", @class="ddlMultiSlectBox" })
                 </div>
             </div>
-            <p><button type="submit" class="btn btn-default">Submit</button></p>
+            <br><br><br><br><br><br><br><br><br><br>
+            <button type="submit" class="w3-button w3-dark-grey">Create Itinerary</button>
             }
         </div>
     </div>
@@ -190,7 +191,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
       </script>
       <br/>
       </div>
-      <p></p><button class="w3-button w3-dark-grey">@Html.ActionLink("Search and Find Dates", "RiskOutcome", new { StartingLocation = ViewBag.StartingLocation, EndingLocation = ViewBag.EndingLocation, NumConnections = ViewBag.NumConnections,ConnectingLocations = ViewBag.ConnectingLocations})</button></p>      
+      <p></p><button class="w3-button w3-dark-grey">@Html.ActionLink("Assess Risk", "RiskOutcome", new { StartingLocation = ViewBag.StartingLocation, EndingLocation = ViewBag.EndingLocation, NumConnections = ViewBag.NumConnections,ConnectingLocations = ViewBag.ConnectingLocations})</button></p>      
       
     </div>
   </div>
