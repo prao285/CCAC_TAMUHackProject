@@ -1,39 +1,97 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-@{
-    ViewBag.Title = "Populate";
-}
-@model Query
- @{
-    ViewBag.Title = "New Session? Fill this out and we can get started!";
-}
-
-<h1>@ViewBag.Title</h1>
-@using(Html.BeginForm()){
-  <div class="form-group">
-    @Html.LabelFor(model => model.StartingLocation)
-    @Html.TextBoxFor(model => model.StartingLocation, new { @class="form-control"}) 
-    @Html.LabelFor(model => model.EndingLocation)
-    @Html.TextBoxFor(model => model.EndingLocation, new { @class="form-control"}) 
-    @Html.LabelFor(model => model.NumConnections)
-    @Html.TextBoxFor(model => model.NumConnections, new { @class="form-control"}) 
-    @Html.LabelFor(model => model.ConnectingLocations)
-    @Html.TextBoxFor(model => model.ConnectingLocations, new { @class="form-control"}) 
-  </div>
- @* type="submit" class="btn btn-default"  *@
-     <button type="submit" class="btn btn-default">Submit</button>
-}
-<h2>Restaurants in your area</h2>
-
-<ul>
-    @for (int i = 0; i < ViewBag.NumTimes; i++)
-    {
-        <li>@ViewBag.Message</li>
+<style>
+    #hi{
+        filter: hue-rotate(45deg);
     }
-            @* public async Task<ActionResult> RiskOutcome(string StartingLocation,string EndingLocation, int  NumConnections, string ConnectingLocations){ *@
+    #Flight {
+        color: #331DCE;
+    }
+body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
+.myLink {display: none}
+</style>
+<body class="w3-light-grey">
 
-</ul>
-@Html.ActionLink("Find My Pare", "RiskOutcome", new { StartingLocation = ViewBag.StartingLocation, EndingLocation = ViewBag.EndingLocation, NumConnections = ViewBag.NumConnections,ConnectingLocations = ViewBag.ConnectingLocations})
-<br><br><br>
+<!-- Navigation Bar -->
+<div class="w3-bar w3-white w3-border-bottom w3-xlarge">
+  <a href="#" class="w3-bar-item w3-button w3-text-red w3-hover-red"><b><i class="fa fa-map-marker w3-margin-right"></i>CCAC TAMUhacks</b></a>
+  <a href="#" class="w3-bar-item w3-button w3-right w3-hover-red w3-text-grey"><i class="fa fa-search"></i></a>
+</div>
+
+<!-- Header -->
+<header class="w3-display-container w3-content w3-hide-small" style="max-width:1500px">
+  <img id = "hi" class="w3-image" src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MXwxMjA3fDB8MXxzZWFyY2h8MXx8cGxhbmV8fDB8fHw&ixlib=rb-1.2.1&q=80&w=1080" alt="London" width="1500" height="700">
+  <div class="w3-display-middle" style="width:80%; top: 275px;">
+      
+
+    <div class="w3-bar w3-black">
+      <button class="w3-bar-item w3-button tablink" onclick="start();"><i class="fa fa-plane w3-margin-right"></i>Flight</button>
+    </div>
+
+    <!-- Tabs -->
+    <div id="Flight" class="w3-container w3-white w3-padding-16 myLink">
+      <h3>Travel the world with us</h3>
+      <div class="w3-row-padding" style="margin:0 -16px;">
+        <div class="w3-half">
+          <label>From</label>
+          <input class="w3-input w3-border" type="text" placeholder="Departing from">
+        </div>
+        <div class="w3-half">
+          <label>To</label>
+          <input class="w3-input w3-border" type="text" placeholder="Arriving at">
+        </div>
+      </div>
+      
+      <div>
+      <form name="myForm" id="myForm" onclick="addLayover()">
+    	<br />
+    	<input type="text" id="LayoverTextBox" />
+    	<input type="button" id="addLayover" value="Add Layover" />
+    	<br/>
+	</form>
+      <script> 
+      	document.getElementById("addLayover").onclick = function() {
+    		var form = document.getElementById("myForm");
+    		var input = document.createElement("input");
+    		input.type = "text";
+    		var br = document.createElement("br");
+    		form.appendChild(input);
+    		form.appendChild(br);
+		}
+      </script>
+      <br/>
+      </div>
+      <p><button class="w3-button w3-dark-grey">Search and find dates</button></p>      
+      
+    </div>
+  </div>
+</header>
+
+<script>
+// Tabs
+
+function start() {
+  var i, x, tablinks;
+  x = document.getElementsByClassName("myLink");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < x.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+  }
+  document.getElementById('Flight').style.display = "block";
+  event.currentTarget.className += " w3-red";
+} 
+// Launch Flight Portion
+document.getElementsByClassName("tablink")[0].click();
+</script>
+
+</body>
+</html>
