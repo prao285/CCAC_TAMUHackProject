@@ -189,7 +189,18 @@ namespace hackathon.Controllers{
             ViewBag.ConnectingLocations = ConnectingLocations;
             return View();
         }
-
+        private string createAnalysis(int num){
+            if(num<10){
+                return "The covid risk for your itinerary is relatively low. Exercise CDC recomended social distancing and enjoy your flight";
+            }
+            if(num<25){
+                return "The covid risk for your itinerary is moderate. You are traveling to an area with a higher rate of infection than from where you left. Follow CDC social distancing guidelines and caution";
+            }
+            if(num<50){
+                return "The covid risk for your itinerary is high. You are traveling to an area with a high rate of infection. Follow CDC social distancing guidelines and exercise extreme caution";
+            }
+            return "The covid risk for your itinerary is severe. Follow CDC social distancing guidelines, avoid crowds and wear a mask at all times";
+        }
         private double calculateRisk(List<int> positivityRates, List<String> airports){
             //black box code
             double totalRisk = 0;
@@ -266,7 +277,9 @@ namespace hackathon.Controllers{
 
             // ViewBag.Description = calculateRisk(positivityRates, airports);
              ViewBag.Description = 100;
-
+             ViewBag.Start = StartingLocation;
+             ViewBag.End = EndingLocation;
+             ViewBag.Analysis = createAnalysis(ViewBag.Description);
             //Console.WriteLine(positivityRates[0]);
             return View();
         }
