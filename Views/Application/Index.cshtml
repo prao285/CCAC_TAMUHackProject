@@ -1,3 +1,29 @@
+         @{
+    ViewBag.Title = "Populate";
+}
+@model Query
+ @{
+    ViewBag.Title = "New Session? Fill this out and we can get started!";
+}
+         @{
+List<SelectListItem> listItems = new List<SelectListItem>();
+listItems.Add(new SelectListItem
+  {
+      Text = "Hartsfield–Jackson Atlanta International Airport",
+      Value = "Hartsfield–Jackson Atlanta International Airport"
+  });
+listItems.Add(new SelectListItem
+ {
+     Text = "Los Angeles International Airport",
+     Value = "Los Angeles International Airport",
+     Selected = true
+ });
+listItems.Add(new SelectListItem
+ {
+     Text = "O'Hare International Airport",
+     Value = "O'Hare International Airport"
+ });
+        }
 <!DOCTYPE html>
 <html>
 <title>W3.CSS Template</title>
@@ -17,6 +43,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 .myLink {display: none}
 </style>
 <body class="w3-light-grey">
+<h1>@ViewBag.Title</h1>
 
 <!-- Navigation Bar -->
 <div class="w3-bar w3-white w3-border-bottom w3-xlarge">
@@ -39,26 +66,43 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
       <h3>Travel the world with us</h3>
       <div class="w3-row-padding" style="margin:0 -16px;">
         <div class="w3-half">
-          <label>From</label>
-          <input class="w3-input w3-border" type="text" placeholder="Departing from">
+            @using(Html.BeginForm()){
+  <div class="form-group">
+     <div class="w3-half">
+
+    @Html.LabelFor(model => model.StartingLocation)
+    @Html.DropDownListFor(model => model.StartingLocation, new SelectList(listItems,  "Value", "Text", "penis"))
+    @Html.LabelFor(model => model.EndingLocation)
+    @Html.DropDownListFor(model => model.EndingLocation, new SelectList(listItems,  "Value", "Text", "penis"))
+    @Html.LabelFor(model => model.ConnectingLocations)
+    @Html.DropDownListFor(model => model.ConnectingLocations, new SelectList(listItems,  "Value", "Text", "penis"))
         </div>
-        <div class="w3-half">
-          <label>To</label>
-          <input class="w3-input w3-border" type="text" placeholder="Arriving at">
+
+  </div>
+ @* type="submit" class="btn btn-default"  *@
+     <button type="submit" class="btn btn-default">Submit</button>
+}
+          @* <label>From</label> *@
+          @* @Html.DropDownList("yourDropName", listItems, new { @class = "form-control" }) *@
         </div>
+        @* <div class="w3-half"> *@
+          @* <label>To</label> *@
+          @* @Html.DropDownList("yourDropName", listItems, new { @class = "form-control" }) *@
+        @* </div> *@
       </div>
       
       <div>
-      <form name="myForm" id="myForm" onclick="addLayover()">
+      @* <form name="myForm" id="myForm" onclick="addLayover()">
     	<br />
     	<input type="text" id="LayoverTextBox" />
     	<input type="button" id="addLayover" value="Add Layover" />
-    	<br/>
-	</form>
+    	<br/> *@
+	@* </form> *@
+</button>
       <script> 
       	document.getElementById("addLayover").onclick = function() {
     		var form = document.getElementById("myForm");
-    		var input = document.createElement("input");
+    		var input = document.createElement("option");
     		input.type = "text";
     		var br = document.createElement("br");
     		form.appendChild(input);
@@ -67,7 +111,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
       </script>
       <br/>
       </div>
-      <p><button class="w3-button w3-dark-grey">Search and find dates</button></p>      
+      <p><button class="w3-button w3-dark-grey">@Html.ActionLink("Search and find dates", "RiskOutcome", new { StartingLocation = ViewBag.StartingLocation, EndingLocation = ViewBag.EndingLocation, NumConnections = ViewBag.NumConnections,ConnectingLocations = ViewBag.ConnectingLocations})</p>      
       
     </div>
   </div>
