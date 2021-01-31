@@ -43,12 +43,12 @@ svg {
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <body onload= "colorTheStates('@ViewBag.Message')">
 
-<div class="w3-container w3-grey" style="position:relative">
+<div class="w3-container" style="position:relative">
  <a class="w3-btn w3-circle w3-xlarge w3-right w3-white" style="position:absolute;top:126px;right:42px;"><i>+</i></a>
  <h1 class="w3-jumbo w3-text-grey" style="text-shadow:1px 1px 0 #444">Your personal risk assesment</h1>
 </div>
-
-<div class="w3-grey w3-animate-zoom" style="padding:20px 50px;background-image:url('pic_boat_portrait.jpg');
+@* placeholder image *@
+<div class=" w3-animate-zoom" style="padding:20px 50px;background-image:url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MXwxMjA3fDB8MXxzZWFyY2h8MXx8cGxhbmV8fDB8fHw&ixlib=rb-1.2.1&q=80&w=1080');
 background-size:cover;">
 
 <div class="w3-section w3-row-padding">
@@ -133,7 +133,7 @@ background-size:cover;">
     <div class="w3-card-4 w3-section">
       <div class="w3-container w3-white">
       <p class="w3-xxlarge">Itinerary</p>
-      <p class="w3-large">your flight from @ViewBag.Start to @ViewBag.End </p>
+      <p class="w3-large">your trip from @ViewBag.Start to @ViewBag.End </p>
       </div>
       <div class="w3-container">
       </div>
