@@ -63,7 +63,59 @@ namespace hackathon.Controllers{
                 {"Cincinnati/Northern Kentucky International Airport", "OH"},
                 {"John Glenn Columbus International Airport", "OH"}
             };
-
+            Dictionary <string, int> statePopulations = new Dictionary <string, int>() {
+                {"CA", 39512223},
+                {"TX", 28995881},
+                {"FL", 21477737},
+                {"NY", 19453561},
+                {"IL", 12671821},
+                {"PA", 12801989},
+                {"OH", 11689100},
+                {"GA", 10617423},
+                {"NC", 10488084},
+                {"MI", 9986857},
+                {"NJ", 8882190},
+                {"VA", 8535519},
+                {"WA", 7614893},
+                {"AZ", 7278717},
+                {"MA", 6949503},
+                {"TN", 6833174},
+                {"IN", 6732219},
+                {"MO", 6137428},
+                {"MD", 6045680},
+                {"WI", 5822434},
+                {"CO", 5758736},
+                {"MN", 5639632},
+                {"SC", 5148714},
+                {"AL", 4903185},
+                {"LA", 4648794},
+                {"KY", 4467673},
+                {"OR", 4217737},
+                {"OK", 3956971},
+                {"CT", 3565287},
+                {"UT", 3205958},
+                {"IA", 3155070},
+                {"NV", 3080156},
+                {"AR", 3017825},
+                {"MS", 2976149},
+                {"KS", 2913314},
+                {"NM", 2096829},
+                {"NE", 1934408},
+                {"WV", 1792147},
+                {"ID", 1787065},
+                {"HI", 1415872},
+                {"NH", 1359711},
+                {"ME", 1344212},
+                {"MT", 1068778},
+                {"RI", 1059361},
+                {"DE", 973764},
+                {"SD", 884659},
+                {"ND", 762062},
+                {"AK", 731545},
+                {"DC", 705749},
+                {"VT", 623989},
+                {"WY", 578759}
+            };
             //Based on 2019 Data
             Dictionary<string, string> airportToDailyPersons = new Dictionary<string, string>(){
                 {"Hartsfield–Jackson Atlanta International Airport", "146591"},
@@ -117,6 +169,18 @@ namespace hackathon.Controllers{
                 {"Cincinnati/Northern Kentucky International Airport", "12091"},
                 {"John Glenn Columbus International Airport", "11430"}
             };
+            
+       private string mapInfo(List<State> stateResults){
+           string ans = "";
+           var val = statePopulations.Keys.ToList();
+           val.Sort();
+           foreach(string key in val){
+               var st = (stateResults).Where(x=>x.state ==key).ToArray()[0];
+               var startingInfo = (st.total*130)/statePopulations[key];
+               ans+=key+","+startingInfo+"-";
+           }
+           return ans;
+       }     
        public ActionResult Index(string StartingLocation = "",string EndingLocation= "", int  NumConnections=0, string ConnectingLocations= "")
         {
             ViewBag.StartingLocation = StartingLocation;
@@ -174,9 +238,10 @@ namespace hackathon.Controllers{
 
             //gets response 
             string responseBody = await response.Content.ReadAsStringAsync();
-            var stateResults = Newtonsoft.Json.JsonConvert.DeserializeObject<List<State>>(responseBody);;
+            var stateResults = Newtonsoft.Json.JsonConvert.DeserializeObject<List<State>>(responseBody);
             var startingInfo = (stateResults).Where(x=>x.state == aiportToStates[StartingLocation]).ToArray()[0];
-
+            ViewBag.MapInfo = mapInfo(stateResults);
+            ViewBag.Message = mapInfo(stateResults);
             //add positivity rates 
             List<int> positivityRates = new List<int>();
             List<String> airports = new List<string>();
@@ -199,7 +264,9 @@ namespace hackathon.Controllers{
             airports.Add(EndingLocation);
 
 
-            ViewBag.Description = calculateRisk(positivityRates, airports);
+            // ViewBag.Description = calculateRisk(positivityRates, airports);
+             ViewBag.Description = 100;
+
             //Console.WriteLine(positivityRates[0]);
             return View();
         }
