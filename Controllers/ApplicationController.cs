@@ -170,19 +170,27 @@ namespace hackathon.Controllers{
                 {"John Glenn Columbus International Airport", "11430"}
             };
             
+        /*
+        * this method generates map information for the front end 
+        */
        private string mapInfo(List<State> stateResults){
+           
+           //sets up answer 
            string ans = "";
+
+           //grabs keys 
            var val = statePopulations.Keys.ToList();
            val.Sort();
+
+           //iterates and sets red value based on increase in positivty rate 
            foreach(string key in val){
                var st = (stateResults).Where(x=>x.state ==key).ToArray()[0];
                var startingInfo = 255 - (((st.positiveIncrease*111200)/statePopulations[key])*2);
                ans+=key+","+startingInfo+"-";
-            //    Console.WriteLine(startingInfo);
-            //    Console.WriteLine(key + " recovered:"+ st.positiveIncrease + " total:" + st.positiveTestsViral + " active cases:" + (st.positive-st.recovered));
            }
            return ans;
-       }     
+       }   
+
        public ActionResult Index(string StartingLocation = "",string EndingLocation= "", int  NumConnections=0, List<string> ConnectingLocations=null)
         {
             ViewBag.StartingLocation = StartingLocation;
