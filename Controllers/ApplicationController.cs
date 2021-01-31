@@ -176,13 +176,16 @@ namespace hackathon.Controllers{
            val.Sort();
            foreach(string key in val){
                var st = (stateResults).Where(x=>x.state ==key).ToArray()[0];
-               var startingInfo = (st.total*130)/statePopulations[key];
+               var startingInfo = 255 - (((st.positiveIncrease*111200)/statePopulations[key])*2);
                ans+=key+","+startingInfo+"-";
+            //    Console.WriteLine(startingInfo);
+            //    Console.WriteLine(key + " recovered:"+ st.positiveIncrease + " total:" + st.positiveTestsViral + " active cases:" + (st.positive-st.recovered));
            }
            return ans;
        }     
        public ActionResult Index(string StartingLocation = "",string EndingLocation= "", int  NumConnections=0, string ConnectingLocations= "")
         {
+            Console.WriteLine("hello"+ StartingLocation);
             ViewBag.StartingLocation = StartingLocation;
             ViewBag.EndingLocation = EndingLocation;
             ViewBag.NumConnections = NumConnections;
