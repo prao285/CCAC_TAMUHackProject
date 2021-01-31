@@ -12,14 +12,14 @@ namespace hackathon.Controllers{
 
     public class ApplicationController: Controller{
     Dictionary<string, string> aiportToStates = new Dictionary<string, string>(){
-                {"Hartsfield–Jackson Atlanta International Airport", "GA"},
+                {"Hartsfield-Jackson Atlanta International Airport", "GA"},
                 {"Los Angeles International Airport", "CA"},
                 {"O'Hare International Airport", "IL"},
                 {"Dallas/Fort Worth International Airport", "TX"},
                 {"Denver International Airport", "CO"},
                 {"John F. Kennedy International Airport", "NY"},
                 {"San Francisco International Airport", "CA"},
-                {"Seattle–Tacoma International Airport", "WA"},
+                {"Seattle-Tacoma International Airport", "WA"},
                 {"McCarran International Airport", "NV"},
                 {"Orlando International Airport", "FL"},
                 {"Charlotte Douglas International Airport", "NC"},
@@ -28,7 +28,6 @@ namespace hackathon.Controllers{
                 {"George Bush Intercontinental Airport", "TX"},
                 {"Miami International Airport", "FL"},
                 {"General Edward Lawrence Logan International Airport", "MA"},
-                {"Minneapolis-Saint Paul International Airport", "MN"},
                 {"Minneapolis–Saint Paul International Airport", "MN"},
                 {"Detroit Metropolitan Airport", "MI"},
                 {"Fort Lauderdale–Hollywood International Airport", "FL"},
@@ -44,7 +43,7 @@ namespace hackathon.Controllers{
                 {"Daniel K. Inouye International Airport", "HI"},
                 {"Portland International Airport", "OR"},
                 {"Nashville International Airport", "TN"},
-                {"Austin–Bergstrom International Airport", "TX"},
+                {"Austin-Bergstrom International Airport", "TX"},
                 {"Dallas Love Field", "TX"},
                 {"St. Louis Lambert International Airport", "MO"},
                 {"Norman Y. Mineta San José International Airport", "CA"},
@@ -135,7 +134,6 @@ namespace hackathon.Controllers{
                 {"George Bush Intercontinental Airport", "60015"},
                 {"Miami International Airport", "58688"},
                 {"General Edward Lawrence Logan International Airport", "56711"},
-                {"Minneapolis-Saint Paul International Airport", "52583"},
                 {"Minneapolis–Saint Paul International Airport", "52583"},
                 {"Detroit Metropolitan Airport", "49707"},
                 {"Fort Lauderdale–Hollywood International Airport", "49180"},
@@ -151,7 +149,7 @@ namespace hackathon.Controllers{
                 {"Daniel K. Inouye International Airport", "27366"},
                 {"Portland International Airport", "26842"},
                 {"Nashville International Airport", "25020"},
-                {"Austin–Bergstrom International Airport", "23790"},
+                {"Austin-Bergstrom International Airport", "23790"},
                 {"Dallas Love Field", "23036"},
                 {"St. Louis Lambert International Airport", "21772"},
                 {"Norman Y. Mineta San José International Airport", "21449"},
@@ -184,48 +182,32 @@ namespace hackathon.Controllers{
             if(!st.recovered.HasValue) {
                 st.recovered = (int)(0.8 * st.positive);
             }
-            Console.WriteLine(key + " recovered:"+ (st.recovered) + "p" + st.positive);
+            //Console.WriteLine(key + " recovered:"+ (st.recovered) + "p" + st.positive);
               
            }
            return ans;
-       }   
-
-       public ActionResult Index(string StartingLocation = "",string EndingLocation= "", int  NumConnections=0, List<string> ConnectingLocations=null)
        }     
-       public ActionResult Index(string StartingLocation = "",string EndingLocation= "", int  NumConnections=0, string ConnectingLocations= "")
+       public ActionResult Index(string StartingLocation = "",string EndingLocation= "", int  NumConnections=0, List<String> ConnectingLocations= null)
         {
+            Console.WriteLine("hello"+ StartingLocation);
             ViewBag.StartingLocation = StartingLocation;
             ViewBag.EndingLocation = EndingLocation;
             ViewBag.NumConnections = NumConnections;
             ViewBag.ConnectingLocations = ConnectingLocations;
             return View();
         }
-        private string createAnalysis(int num){
-            if(num<10){
-            if(num<50){
+        private string createAnalysis(double num){
+            if(num<100){
                 return "The covid risk for your itinerary is relatively low. Exercise CDC recomended social distancing and enjoy your flight";
             }
-            if(num<25){
-            if(num<75){
+            if(num<200){
                 return "The covid risk for your itinerary is moderate. You are traveling to an area with a higher rate of infection than from where you left. Follow CDC social distancing guidelines and caution";
             }
-            if(num<50){
-            if(num<100){
+            if(num<300){
                 return "The covid risk for your itinerary is high. You are traveling to an area with a high rate of infection. Follow CDC social distancing guidelines and exercise extreme caution";
             }
             return "The covid risk for your itinerary is severe. Follow CDC social distancing guidelines, avoid crowds and wear a mask at all times";
         }
-        private double calculateRisk(List<int> positivityRates, List<String> airports){
-            //black box code
-            double totalRisk = 0;
-            for (int i = 0; i < airports.Count; i ++) {
-                double population = double.Parse(airportToDailyPersons[airports[i]]);
-                double totalInfected = positivityRates[i];
-                double numOfPeopleContacted = 40;
-
-                BigInteger numerator = (BigInteger)Math.Pow(population - totalInfected, numOfPeopleContacted);
-                BigInteger denom = (BigInteger)Math.Pow(population, numOfPeopleContacted);
-
         private double calculateRisk(List<int> cases, List<int> recovered, List<int> death, List<int> deltaCases, List<String> airports){
             double riskScore = 0;
 
@@ -238,32 +220,17 @@ namespace hackathon.Controllers{
                     activeCases *= -1;
                 }
 
-                Console.WriteLine(numerator);
-                Console.WriteLine(denom);
-                Console.WriteLine(factorialDivision(numerator, denom));
                 riskScore += (activeCases + (deltaCases[i] * 0.75));
 
 
-                totalRisk += (1 - ((double) (numerator) / (double) (denom)));
             }
 
-            return totalRisk;
-        }
-
-        private decimal factorialDivision(BigInteger num, BigInteger denom) {
-            decimal result = 1;
-
-            for(BigInteger i = (num + 1); i <= denom; i ++) {
-                result *= ((decimal)i) / 1000000;
-            }
             
-            return(result);
             return riskScore / 10000;
         }
 
 
         public async Task<ActionResult> RiskOutcome(string StartingLocation, string EndingLocation, int  NumConnections, List<string> ConnectingLocations){
-        public async Task<ActionResult> RiskOutcome(string StartingLocation, string EndingLocation, int  NumConnections, string ConnectingLocations){
            
             //creates the client 
             HttpClient client = new HttpClient();
@@ -281,13 +248,11 @@ namespace hackathon.Controllers{
             ViewBag.MapInfo = mapInfo(stateResults);
             ViewBag.Message = mapInfo(stateResults);
             //add positivity rates 
-            List<int> positivityRates = new List<int>();
             List<int> cases = new List<int>();
             List<int> recovered = new List<int>();
             List<int> death = new List<int>();
             List<int> deltaCases = new List<int>();
             List<String> airports = new List<string>();
-            positivityRates.Add((int)(stateResults).Where(x=>x.state == aiportToStates[StartingLocation]).ToArray()[0].positiveIncrease);
 
             Console.WriteLine(StartingLocation);
             cases.Add((int)(stateResults).Where(x=>x.state == aiportToStates[StartingLocation]).ToArray()[0].positive);
@@ -299,16 +264,8 @@ namespace hackathon.Controllers{
             
             
             //split conections 
+            //Array connections = ConnectingLocations.Split(",");
             foreach(string s in ConnectingLocations){
-                try{
-                   airports.Add(s);
-                   positivityRates.Add((int)(stateResults).Where(x=>x.state == aiportToStates[s]).ToArray()[0].positiveIncrease);
-                }
-                catch{
-                    Console.WriteLine("not a valid state");
-                }
-            Array connections = ConnectingLocations.Split(",");
-            foreach(string s in connections){
                 
                 cases.Add((int)(stateResults).Where(x=>x.state == aiportToStates[s]).ToArray()[0].positive);
                 recovered.Add((int)(stateResults).Where(x=>x.state == aiportToStates[s]).ToArray()[0].recovered);
@@ -319,7 +276,6 @@ namespace hackathon.Controllers{
                 
             }
 
-            positivityRates.Add((int)(stateResults).Where(x=>x.state == aiportToStates[EndingLocation]).ToArray()[0].positiveIncrease);
         
             cases.Add((int)(stateResults).Where(x=>x.state == aiportToStates[EndingLocation]).ToArray()[0].positive);
             recovered.Add((int)(stateResults).Where(x=>x.state == aiportToStates[EndingLocation]).ToArray()[0].recovered);
@@ -330,13 +286,10 @@ namespace hackathon.Controllers{
             
 
 
-            // ViewBag.Description = calculateRisk(positivityRates, airports);
-            ViewBag.Description = calculateRisk(cases, recovered, death, deltaCases, airports);
-             ViewBag.Description = 100;
+            ViewBag.Description = Math.Round(calculateRisk(cases, recovered, death, deltaCases, airports));
              ViewBag.Start = StartingLocation;
              ViewBag.End = EndingLocation;
              ViewBag.Analysis = createAnalysis(ViewBag.Description);
-            //Console.WriteLine(positivityRates[0]);
             Console.WriteLine(calculateRisk(cases, recovered, death, deltaCases, airports));
             return View();
         }
