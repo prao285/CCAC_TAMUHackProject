@@ -183,9 +183,8 @@ namespace hackathon.Controllers{
            }
            return ans;
        }     
-       public ActionResult Index(string StartingLocation = "",string EndingLocation= "", int  NumConnections=0, string ConnectingLocations= "")
+       public ActionResult Index(string StartingLocation = "",string EndingLocation= "", int  NumConnections=0, List<string> ConnectingLocations=null)
         {
-            // Console.WriteLine("hello"+ StartingLocation);
             ViewBag.StartingLocation = StartingLocation;
             ViewBag.EndingLocation = EndingLocation;
             ViewBag.NumConnections = NumConnections;
@@ -239,7 +238,7 @@ namespace hackathon.Controllers{
         }
 
 
-        public async Task<ActionResult> RiskOutcome(string StartingLocation, string EndingLocation, int  NumConnections, string ConnectingLocations){
+        public async Task<ActionResult> RiskOutcome(string StartingLocation, string EndingLocation, int  NumConnections, List<string> ConnectingLocations){
            
             //creates the client 
             HttpClient client = new HttpClient();
@@ -263,8 +262,7 @@ namespace hackathon.Controllers{
             airports.Add(StartingLocation);
             
             //split conections 
-            Array connections = ConnectingLocations.Split(",");
-            foreach(string s in connections){
+            foreach(string s in ConnectingLocations){
                 try{
                    airports.Add(s);
                    positivityRates.Add((int)(stateResults).Where(x=>x.state == aiportToStates[s]).ToArray()[0].positiveIncrease);
