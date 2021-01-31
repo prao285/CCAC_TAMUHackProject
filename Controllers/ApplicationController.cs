@@ -28,7 +28,7 @@ namespace hackathon.Controllers{
                 {"George Bush Intercontinental Airport", "TX"},
                 {"Miami International Airport", "FL"},
                 {"General Edward Lawrence Logan International Airport", "MA"},
-                {"Minneapolis–Saint Paul International Airport", "MN"},
+                {"Minneapolis-Saint Paul International Airport", "MN"},
                 {"Detroit Metropolitan Airport", "MI"},
                 {"Fort Lauderdale–Hollywood International Airport", "FL"},
                 {"Philadelphia International Airport", "PA"},
@@ -134,7 +134,7 @@ namespace hackathon.Controllers{
                 {"George Bush Intercontinental Airport", "60015"},
                 {"Miami International Airport", "58688"},
                 {"General Edward Lawrence Logan International Airport", "56711"},
-                {"Minneapolis–Saint Paul International Airport", "52583"},
+                {"Minneapolis-Saint Paul International Airport", "52583"},
                 {"Detroit Metropolitan Airport", "49707"},
                 {"Fort Lauderdale–Hollywood International Airport", "49180"},
                 {"Philadelphia International Airport", "43853"},
@@ -185,7 +185,7 @@ namespace hackathon.Controllers{
        }     
        public ActionResult Index(string StartingLocation = "",string EndingLocation= "", int  NumConnections=0, string ConnectingLocations= "")
         {
-            Console.WriteLine("hello"+ StartingLocation);
+            // Console.WriteLine("hello"+ StartingLocation);
             ViewBag.StartingLocation = StartingLocation;
             ViewBag.EndingLocation = EndingLocation;
             ViewBag.NumConnections = NumConnections;
