@@ -48,7 +48,12 @@ svg {
 <body onload= "colorTheStates('@ViewBag.Message')">
 
 <div class="w3-container" style="position:relative">
- <a class="w3-btn w3-circle w3-xlarge w3-right w3-white" style="position:absolute;top:126px;right:42px;"><i>+</i></a>
+ <button class="w3-btn w3-circle w3-xlarge w3-right w3-white" id="backButton" style="position:absolute;top:126px;right:42px;" onclick="goBack()"><i>Back</i></button>
+<script>
+    function goBack() {
+        window.location.href = 'https://localhost:5001/Application/';
+    } 
+</script>
  <h1 class="w3-jumbo w3-text-grey" style="text-shadow:1px 1px 0 #444">Your personal risk assesment</h1>
 </div>
 @* placeholder image *@
